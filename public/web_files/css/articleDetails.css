@@ -1,0 +1,100 @@
+.article-area {
+	padding-top: 60px;
+	padding-bottom: 60px;
+}
+
+.article-content {
+	padding: 30px;
+}
+
+.article-content img {
+	margin-bottom: 15px;
+	width: 770px;
+	height: 397px;
+}
+
+.article-content ul li {
+	color: #aaaaaa;
+}
+
+.article-content ul {
+	border-bottom: 1px solid #aaaaaa;
+}
+
+
+.article-title {
+	font-size: 30px;
+}
+
+.mb-20 {
+	margin-bottom: 20px;
+}
+
+.mt-20 {
+	margin-top: 20px;
+}
+
+.article-right-section {
+	margin-top: 30px;
+}
+
+.article-right-section .item {
+	padding: 30px;
+	background-color: #d4d4d4;
+}
+
+
+.article-right-section .item .title {
+	position: relative;
+	margin-bottom: 35px;
+	font-weight: 700;
+}
+
+.article-right-section .item .title::after {
+	position: absolute;
+	content: "";
+	right: 0;
+	bottom: -10px;
+	height: 2px;
+	width: 40px;
+	background-color: var(--first-color);
+}
+
+.article-right-section .item .single-post li {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+
+.article-right-section .item .single-post li:not(:last-child) {
+	margin-bottom: 15px;
+}
+
+.article-right-section .item .single-post li span {
+	font-size: 14px;
+}
+
+.single-post li {
+	display: flex;
+	gap: 10px;
+}
+
+.single-post li:not(:last-child) {
+	margin-bottom: 15px;
+}
+
+.single-post li span {
+	font-size: 14px;
+}
+
+.single-post li a {
+	transition: all 0.5s;
+	-webkit-transition: all 0.5s;
+	-moz-transition: all 0.5s;
+	-ms-transition: all 0.5s;
+	-o-transition: all 0.5s;
+}
+
+.single-post li a:hover {
+	color: var(--sec-color);
+}

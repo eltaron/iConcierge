@@ -1,0 +1,24 @@
+h2 {
+    font-size: medium;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin: 0 30px 10px;
+    font-weight: bold;
+    line-height: 1;
+}
+#font-page-title:before {
+    font-family: 'DroidArabicKufiBold', serif;
+    font-weight: bold;
+    font-style: normal;
+    content: "Droid Arabic Kufi";
+}
+#font-page-title:before {
+    text-shadow: none;
+    color: rgba(0,0,0, 0.075);
+    content: "the font title";
+    font-size: 4em;
+    height: 0;
+    display: block;
+    text-align: center;
+}
