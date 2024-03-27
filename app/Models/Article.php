@@ -23,4 +23,8 @@ class Article extends Model
     {
         return $this->belongsTo('App\Models\User');
     }
+    public function detail()
+    {
+        return $this->hasOne('App\Models\ArticleDetail');
+    }
 }

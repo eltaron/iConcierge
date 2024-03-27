@@ -24,13 +24,13 @@ Route::group(['namespace' => 'Api'], function () {
     Route::post("update", 'AuthController@update');
     Route::post("changetype", 'AuthController@changetype');
     Route::post("promocode", 'AuthController@promocode');
-    Route::get("reviews", 'ReviewController@index');
+    Route::post("reviews", 'ReviewController@index');
     Route::group(['prefix' => 'services'], function () {
-        Route::get("", 'ServiceController@index');
+        Route::post("", 'ServiceController@index');
         Route::get("schedule", 'ServiceController@schedule');
         Route::get("popular", 'ServiceController@popular');
         Route::get("recommended", 'ServiceController@recommended');
-        Route::get("show", 'ServiceController@show');
+        Route::post("show", 'ServiceController@show');
         Route::post("bookmarked", 'ServiceController@bookmarked');
         Route::post("favorite", 'ServiceController@favorite');
         Route::post("search", 'ServiceController@search');
@@ -54,10 +54,10 @@ Route::group(['namespace' => 'Api'], function () {
         Route::post("delete/all", 'NotificationController@delete_all');
     });
     Route::group(['prefix' => 'articles'], function () {
-        Route::get("", 'ArticleController@index');
+        Route::post("", 'ArticleController@index');
         Route::post("show", 'ArticleController@show');
     });
     Route::group(['prefix' => 'faqs'], function () {
-        Route::get("", 'FaqController@index');
+        Route::post("", 'FaqController@index');
     });
 });

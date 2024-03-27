@@ -4,12 +4,15 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Article;
+use App\Models\ArticleDetail;
 
 class ArticleController extends Controller
 {
-    public function index(){
+    public function index(Request $request)
+    {
         try {
-            $data = '';
+            $data = Article::with('detail')->latest()->paginate($request->perpage);
             return response()->json([
                 'message' => 'success',
                 'data' => $data
@@ -21,9 +24,11 @@ class ArticleController extends Controller
             ]);
         }
     }
-    public function show(Request $request){
+    public function show(Request $request)
+    {
         try {
-            $data = '';
+
+            $data = ArticleDetail::with('article')->where('article_id', $request->id)->first();
             return response()->json([
                 'message' => 'success',
                 'data' => $data

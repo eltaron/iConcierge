@@ -3,11 +3,28 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Service;
 use Illuminate\Http\Request;
 
 class ServiceController extends Controller
 {
-    public function index(){
+    public function index(Request $request)
+    {
+        try {
+            $data = Service::with(['category', 'images'])->latest()->paginate($request->perpage);
+            return response()->json([
+                'message' => 'success',
+                'data' => $data
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'error',
+                'data' => $e->getMessage()
+            ]);
+        }
+    }
+    public function schedule()
+    {
         try {
             $data = '';
             return response()->json([
@@ -21,7 +38,8 @@ class ServiceController extends Controller
             ]);
         }
     }
-    public function schedule(){
+    public function popular()
+    {
         try {
             $data = '';
             return response()->json([
@@ -35,7 +53,8 @@ class ServiceController extends Controller
             ]);
         }
     }
-    public function popular(){
+    public function recommended()
+    {
         try {
             $data = '';
             return response()->json([
@@ -49,7 +68,23 @@ class ServiceController extends Controller
             ]);
         }
     }
-    public function recommended(){
+    public function show(Request $request)
+    {
+        try {
+            $data = Service::with(['category', 'images'])->find($request->id);
+            return response()->json([
+                'message' => 'success',
+                'data' => $data
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'error',
+                'data' => $e->getMessage()
+            ]);
+        }
+    }
+    public function bookmarked(Request $request)
+    {
         try {
             $data = '';
             return response()->json([
@@ -63,7 +98,8 @@ class ServiceController extends Controller
             ]);
         }
     }
-    public function show(){
+    public function favorite(Request $request)
+    {
         try {
             $data = '';
             return response()->json([
@@ -77,7 +113,8 @@ class ServiceController extends Controller
             ]);
         }
     }
-    public function bookmarked(Request $request){
+    public function search(Request $request)
+    {
         try {
             $data = '';
             return response()->json([
@@ -91,7 +128,8 @@ class ServiceController extends Controller
             ]);
         }
     }
-    public function favorite(Request $request){
+    public function filter(Request $request)
+    {
         try {
             $data = '';
             return response()->json([
@@ -105,35 +143,8 @@ class ServiceController extends Controller
             ]);
         }
     }
-    public function search(Request $request){
-        try {
-            $data = '';
-            return response()->json([
-                'message' => 'success',
-                'data' => $data
-            ]);
-        } catch (\Exception $e) {
-            return response()->json([
-                'message' => 'error',
-                'data' => $e->getMessage()
-            ]);
-        }
-    }
-    public function filter(Request $request){
-        try {
-            $data = '';
-            return response()->json([
-                'message' => 'success',
-                'data' => $data
-            ]);
-        } catch (\Exception $e) {
-            return response()->json([
-                'message' => 'error',
-                'data' => $e->getMessage()
-            ]);
-        }
-    }
-    public function upcoming(){
+    public function upcoming()
+    {
         try {
             $data = '';
             return response()->json([
