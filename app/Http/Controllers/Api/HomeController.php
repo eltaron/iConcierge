@@ -9,6 +9,17 @@ class HomeController extends Controller
 {
     public function index()
     {
-        return response()->json(['data' => 'ahmed']);
+        try {
+            $data = '';
+            return response()->json([
+                'message' => 'success',
+                'data' => $data
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'error',
+                'data' => $e->getMessage()
+            ]);
+        }
     }
 }
