@@ -5,7 +5,7 @@ namespace App\Http\Controllers\api;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Hash;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
@@ -248,7 +248,7 @@ class AuthController extends Controller
         }
     }
 
-    public function fotgetPassword(Request $request)
+    public function forgetPassword(Request $request)
     {
         try {
             $data = $request->validate([

@@ -4,12 +4,13 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Faq;
 
 class FaqController extends Controller
 {
     public function index(){
         try {
-            $data = '';
+            $data = Faq::get();
             return response()->json([
                 'message' => 'success',
                 'data' => $data
