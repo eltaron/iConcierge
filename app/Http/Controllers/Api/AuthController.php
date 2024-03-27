@@ -47,7 +47,7 @@ class AuthController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'message' => 'error',
-                'data' => $e->getMessage()
+                'data' => $e
             ]);
         }
     }
@@ -56,6 +56,7 @@ class AuthController extends Controller
         try {
             $data = $request->validate([
                 'username'          => 'required',
+<<<<<<< HEAD
                 'email'                 => 'required|unique:users',
                 'password'              => 'required',
             ]);
@@ -65,6 +66,28 @@ class AuthController extends Controller
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
                 'api_token' => Hash::make($random),
+=======
+                // 'mobile'        => 'required',
+                // 'parent_mobile' => 'nullable',
+                'email'                 => 'required|unique:users',
+                'password'              => 'required',
+                'password'              => 'required',
+                'confirm_password'      => 'required',
+                // 'mac_address'      => 'required',
+            ]);
+            if ($request->password != $request->confirm_password) {
+                throw new \Exception("Password and confirm password do not match");
+            }
+            $random = rand(100000, 99999999);
+            $data = User::create([
+                'username' => $request->name,
+                // 'mobile' => $request->mobile,
+                // 'mac_address' => $request->mac_address,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+                'api_token' => Hash::make($random),
+                // 'parent_mobile' => $request->parent_mobile,
+>>>>>>> 2de2f21a8cf3b84ab9d7f3861c8ac056ea510ec8
             ]);
             return response()->json([
                 'message' => 'success',
@@ -73,7 +96,7 @@ class AuthController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'message' => 'error',
-                'data' => $e->getMessage()
+                'data' => $e
             ]);
         }
     }
@@ -93,7 +116,11 @@ class AuthController extends Controller
                 $data['name'] = $name;
                 $data['code'] = $code;
                 $to = $request->email;
+<<<<<<< HEAD
                 $subject = "iconcierge reset password";
+=======
+                $subject = "univecourses reset password";
+>>>>>>> 2de2f21a8cf3b84ab9d7f3861c8ac056ea510ec8
                 $txt = '
                 <div style="display:block;padding:15px;background-color:#fff">
                     <div>
@@ -165,7 +192,7 @@ class AuthController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'message' => 'error',
-                'data' => $e->getMessage()
+                'data' => $e
             ]);
         }
     }
@@ -206,7 +233,11 @@ class AuthController extends Controller
                 'code'           => 'required',
                 'email'       => 'required',
             ]);
+<<<<<<< HEAD
             $code = PromoCode::where('code', $request->code)->first();
+=======
+            $code=PromoCode::where('code',$request->code)->first();
+>>>>>>> 2de2f21a8cf3b84ab9d7f3861c8ac056ea510ec8
             $user = User::where(['email' => $request->email])->first();
 
             if ($user && $code) {
@@ -227,6 +258,14 @@ class AuthController extends Controller
         }
     }
 
+<<<<<<< HEAD
+=======
+
+
+
+
+
+>>>>>>> 2de2f21a8cf3b84ab9d7f3861c8ac056ea510ec8
     function generateCode()
     {
         $code = mt_rand(100000, 999999);
