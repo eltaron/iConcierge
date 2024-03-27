@@ -25,12 +25,13 @@ Route::group(['namespace' => 'Api'], function () {
     Route::post("changetype", 'AuthController@changetype');
     Route::post("promocode", 'AuthController@promocode');
     Route::post("reviews", 'ReviewController@index');
+    Route::post("categories", 'ServiceController@categories');
     Route::group(['prefix' => 'services'], function () {
         Route::post("", 'ServiceController@index');
         Route::get("schedule", 'ServiceController@schedule');
         Route::get("popular", 'ServiceController@popular');
         Route::get("recommended", 'ServiceController@recommended');
-        Route::post("show", 'ServiceController@show');
+        Route::get("show/{id}", 'ServiceController@show');
         Route::post("bookmarked", 'ServiceController@bookmarked');
         Route::post("favorite", 'ServiceController@favorite');
         Route::post("search", 'ServiceController@search');

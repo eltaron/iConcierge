@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 use App\Models\Service;
 use Illuminate\Http\Request;
 
@@ -23,6 +24,22 @@ class ServiceController extends Controller
             ]);
         }
     }
+    public function categories(Request $request)
+    {
+        try {
+            $data = Category::latest()->paginate($request->perpage);
+            return response()->json([
+                'message' => 'success',
+                'data' => $data
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'error',
+                'data' => $e->getMessage()
+            ]);
+        }
+    }
+
     public function schedule()
     {
         try {
@@ -68,10 +85,10 @@ class ServiceController extends Controller
             ]);
         }
     }
-    public function show(Request $request)
+    public function show($id)
     {
         try {
-            $data = Service::with(['category', 'images'])->find($request->id);
+            $data = Service::with(['category', 'images'])->find($id);
             return response()->json([
                 'message' => 'success',
                 'data' => $data
