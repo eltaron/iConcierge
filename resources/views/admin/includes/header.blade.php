@@ -28,7 +28,7 @@
       >
         <ul class="navbar-nav">
           <li class="nav-item">
-            <a class="nav-link active" href="../pages/dashboard.html">
+            <a class="{{ Request::is('admin/dashboard*') ? 'active' : '' }} nav-link" href="dashboard">
               <div
                 class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center"
               >
@@ -69,7 +69,7 @@
               </div>
               <span class="nav-link-text ms-1">Dashboard</span>
             </a>
-            <a class="nav-link " href="../pages/categories.html">
+            <a class="{{ Request::is('admin/categories*') ? 'active' : '' }} nav-link" href="categories">
               <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                 <svg width="12px" height="12px" viewBox="0 0 45 40" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                   <title>shop</title>
@@ -90,7 +90,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="../pages/tables.html">
+            <a class="{{ Request::is('admin/clients*') ? 'active' : '' }} nav-link" href="clients">
               <div
                 class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center"
               >
@@ -138,7 +138,7 @@
           </li>
           <li class="nav-item">
 
-            <a class="nav-link" href="../pages/billing.html">
+            <a class="{{ Request::is('admin/services*') ? 'active' : '' }} nav-link" href="">
               <div
                 class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center"
               >
@@ -182,7 +182,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="../pages/virtual-reality.html">
+            <a class="{{ Request::is('admin/schedule*') ? 'active' : '' }} nav-link" href="">
               <div
                 class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center"
               >
@@ -230,7 +230,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="../pages/virtual-reality.html">
+            <a class="{{ Request::is('admin/inquiries*') ? 'active' : '' }} nav-link"  href="inquiries">
               <div
                 class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center"
               >
@@ -278,7 +278,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="../pages/virtual-reality.html">
+            <a class="{{ Request::is('admin/notifications*') ? 'active' : '' }} nav-link" href="">
               <div
                 class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center"
               >
@@ -326,7 +326,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="../pages/virtual-reality.html">
+            <a class="{{ Request::is('admin/setting*') ? 'active' : '' }} nav-link" href="">
               <div
                 class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center"
               >

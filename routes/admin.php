@@ -11,6 +11,7 @@ Route::group(['namespace' => 'Admin'], function () {
     Route::get("activities","ActivityController@index");
     Route::get("chats","ChatController@index");
     Route::get("", 'HomeController@index');
+    Route::get("login", 'LoginController@index');
     Route::post('login', 'UserController@login');
     Route::group(['middleware' => ['auth']], function () {
     });
