@@ -30,6 +30,10 @@ class AuthController extends Controller
                     ]);
                     $user = User::where('email', $request->email)->first();
                 }
+                return response()->json([
+                    'message' => 'success',
+                    'data' => $user
+                ]);
             } else {
                 $user = User::where('email', $request->email)->first();
                 if (!$user) {
@@ -55,9 +59,9 @@ class AuthController extends Controller
     {
         try {
             $data = $request->validate([
-                'username'          => 'required',
-                'email'                 => 'required|unique:users',
-                'password'              => 'required',
+                'name'          => 'required',
+                'email'         => 'required|unique:users',
+                'password'      => 'required',
             ]);
             $random = rand(100000, 99999999);
             $data = User::create([
@@ -114,7 +118,7 @@ class AuthController extends Controller
                 ';
                 $headers = "MIME-Version: 1.0" . "\r\n";
                 $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
-                $headers .= "From: <support@univecourses.com>";
+                $headers .= "From: <support@iconcierge.com>";
                 mail($to, $subject, $txt, $headers);
                 return response()->json([
                     'message' => 'success',
@@ -136,11 +140,20 @@ class AuthController extends Controller
     public function newpassword(Request $request)
     {
         try {
-            $data = '';
-            return response()->json([
-                'message' => 'success',
-                'data' => $data
-            ]);
+            $user = User::where('email',$request->email)->first();
+            if($user){
+                $user->password = Hash::make($request->password);
+                $user->save();
+                return response()->json([
+                    'message' => 'success',
+                    'data' => $user
+                ]);
+            }else{
+                return response()->json([
+                    'message' => 'error',
+                    'data' => 'user not found'
+                ]);
+            }
         } catch (\Exception $e) {
             return response()->json([
                 'message' => 'error',
@@ -172,10 +185,44 @@ class AuthController extends Controller
     public function update(Request $request)
     {
         try {
-            $data = '';
+            $validation = $request->validate([
+                'name'          => 'nullable',
+                'email'         => 'nullable',
+                'cover'         => 'nullable',
+                'phone'         => 'nullable',
+            ]);
+            $user = User::find(auth()->guard('api')->id());
+            if ($request->email) {
+                $m = User::where('email', $request->email)->first();
+                if ($m) {
+                    return response()->json([
+                        'message' => 'error',
+                        'data' => 'email found'
+                    ]);
+                } else {
+                    $user->email = $request->email;
+                }
+            }
+            if ($request->name) {
+                $user->username = $request->name;
+            }
+            if ($request->phone) {
+                $user->phone = $request->phone;
+            }
+            $file = $request->file('cover');
+            if (isset($file)) {
+                $mainpath = date("Y-m-d") . '/';
+                $fileNameWithExtension = $file->getClientOriginalName();
+                $fileName = pathinfo($fileNameWithExtension, PATHINFO_FILENAME);
+                $extension = $file->getClientOriginalExtension();
+                $imageName = $fileName . '_' . time() . '.' . $extension;
+                $path = $file->move(public_path('storage/users/' . $mainpath), $imageName);
+                $user->cover = url('') . '/storage/users/' . $mainpath . $imageName;
+            }
+            $user->save();
             return response()->json([
                 'message' => 'success',
-                'data' => $data
+                'data' => $user
             ]);
         } catch (\Exception $e) {
             return response()->json([

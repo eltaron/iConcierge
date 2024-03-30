@@ -55,10 +55,10 @@ class ServiceController extends Controller
             ]);
         }
     }
-    public function popular()
+    public function popular(Request $request)
     {
         try {
-            $data = '';
+            $data = Service::where('popular',1)->with(['category', 'images'])->latest()->paginate($request->perpage);
             return response()->json([
                 'message' => 'success',
                 'data' => $data
@@ -133,7 +133,10 @@ class ServiceController extends Controller
     public function search(Request $request)
     {
         try {
-            $data = '';
+            $key = '%' . $request->key . '%';
+            $data = Service::where('title', 'like', $key)
+            ->orWhere('description', 'like', $key)
+            ->with(['category', 'images'])->latest()->paginate($request->perpage);
             return response()->json([
                 'message' => 'success',
                 'data' => $data
@@ -148,7 +151,11 @@ class ServiceController extends Controller
     public function filter(Request $request)
     {
         try {
-            $data = '';
+            if($request->category_id == 'all'){
+                $data = Service::with(['category', 'images'])->latest()->paginate($request->perpage);
+            }else{
+                $data = Service::where('category_id',$request->category_id)->with(['category', 'images'])->latest()->paginate($request->perpage);
+            }
             return response()->json([
                 'message' => 'success',
                 'data' => $data
