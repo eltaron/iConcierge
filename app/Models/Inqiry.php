@@ -31,4 +31,8 @@ class Inqiry extends Model
     {
         return $this->belongsTo('App\Models\Service');
     }
+    public function messages()
+    {
+        return $this->belongsTo('App\Models\Message');
+    }
 }

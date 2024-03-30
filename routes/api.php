@@ -16,21 +16,21 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['namespace' => 'Api'], function () {
     Route::get("test", 'HomeController@index');
+    Route::post("contact", 'HomeController@contact');
     Route::post("login", 'AuthController@login');
     Route::post("register", 'AuthController@register');
     Route::post("forgetpassword", 'AuthController@forgetpassword');
     Route::post("newpassword", 'AuthController@newpassword');
     Route::post("logout", 'AuthController@logout');
-    Route::post("update", 'AuthController@update');
     Route::post("changetype", 'AuthController@changetype');
     Route::post("promocode", 'AuthController@promocode');
     Route::post("reviews", 'ReviewController@index');
     Route::post("categories", 'ServiceController@categories');
     Route::group(['prefix' => 'services'], function () {
         Route::post("", 'ServiceController@index');
-        Route::get("schedule", 'ServiceController@schedule');
-        Route::get("popular", 'ServiceController@popular');
-        Route::get("recommended", 'ServiceController@recommended');
+        Route::post("schedule", 'ServiceController@schedule');
+        Route::post("popular", 'ServiceController@popular');
+        Route::post("recommended", 'ServiceController@recommended');
         Route::get("show/{id}", 'ServiceController@show');
         Route::post("bookmarked", 'ServiceController@bookmarked');
         Route::post("favorite", 'ServiceController@favorite');
@@ -39,9 +39,8 @@ Route::group(['namespace' => 'Api'], function () {
         Route::get("upcoming", 'ServiceController@upcoming');
     });
     Route::group(['prefix' => 'inquires'], function () {
-        Route::get("", 'InquireController@index');
-        Route::get("show", 'InquireController@show');
-        Route::post("create", 'InquireController@store');
+        Route::post("", 'InquireController@index');
+        Route::post("show", 'InquireController@show');
         Route::post("store/message", 'InquireController@store_message');
         Route::get("services", 'InquireController@services');
         Route::get("requests", 'InquireController@requests');
@@ -60,5 +59,9 @@ Route::group(['namespace' => 'Api'], function () {
     });
     Route::group(['prefix' => 'faqs'], function () {
         Route::post("", 'FaqController@index');
+    });
+    Route::group(['middleware' => 'auth:api'], function () {
+        Route::post("update", 'AuthController@update');
+        Route::post("inquires/create", 'InquireController@store');
     });
 });

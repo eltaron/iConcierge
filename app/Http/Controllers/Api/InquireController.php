@@ -4,12 +4,13 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Inqiry;
 
 class InquireController extends Controller
 {
-    public function index(){
+    public function index(Request $request){
         try {
-            $data = '';
+            $data = Inqiry::with(['user', 'service'])->latest()->paginate($request->perpage);
             return response()->json([
                 'message' => 'success',
                 'data' => $data
@@ -21,9 +22,9 @@ class InquireController extends Controller
             ]);
         }
     }
-    public function show(){
+    public function show(Request $request){
         try {
-            $data = '';
+            $data = Inqiry::with(['user', 'service','messages'])->find($request->id);
             return response()->json([
                 'message' => 'success',
                 'data' => $data
@@ -37,7 +38,20 @@ class InquireController extends Controller
     }
     public function store(Request $request){
         try {
-            $data = '';
+            $validation = $request->validate([
+                'service_id'       => 'required',
+                'date_from'        => 'required',
+                'date_to'          => 'required',
+                'status'           => 'required',
+                'contact_method'   => 'required',
+            ]);
+            $data = new Inqiry();
+            $data->user_id = auth()->guard('api')->id();
+            $data->service_id = $request->service_id;
+            $data->date_from = $request->date_from;
+            $data->date_to = $request->date_to;
+            $data->contact_method = $request->contact_method;
+            $data->save();
             return response()->json([
                 'message' => 'success',
                 'data' => $data
