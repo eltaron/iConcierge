@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Route;
 Route::group(['namespace' => 'Admin'], function () {
     Route::get("dashboard","DashboardController@index");
     Route::get("categories","CategoryController@index");
+    Route::post("categories/save","CategoryController@save");
+    Route::post("categories/update","CategoryController@save");
     Route::get("clients","ClientController@index");
     Route::get("inquiries","InquiryController@index");
     Route::get("activities","ActivityController@index");

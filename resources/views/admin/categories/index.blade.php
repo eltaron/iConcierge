@@ -1,6 +1,7 @@
 @extends('admin.layouts.app')
 @section('content')
   <main class="main-content position-relative max-height-vh-100 h-100 mt-1 border-radius-lg ">
+    @include('admin.includes.message')
     <!-- Navbar -->
     <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl" id="navbarBlur" navbar-scroll="true">
       <div class="container-fluid py-1 px-3">
@@ -31,31 +32,32 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td>
-                        <div class="d-flex px-2 py-1">
 
-                          <div class="d-flex flex-column justify-content-center">
-                            <img style="width: 100px; border-radius:10%" src="{{asset('img/y.png')}}" alt="">
+                    @foreach($categories as $category)
+                        <tr>
+                        <td>
+                          <div class="d-flex px-2 py-1">
+                            <div class="d-flex flex-column justify-content-center">
+                              <img style="width: 100px; border-radius:10%" src="{{asset('img/y.png')}}" alt="">
+                            </div>
                           </div>
-                        </div>
-                      </td>
-                      <td>
-                        <p class="text-xs font-weight-bold mb-0">Yacht Rental</p>
-                      </td>
-                      <td class="align-middle text-center text-sm">
-                        <span class="badge badge-sm bg-gradient-success">10/4/2023</span>
-                      </td>
-                      <td class="text-center">
-                        <a href="" class="btn text-secondary font-weight-bold text-xs" data-bs-toggle="modal" data-bs-target="#edit">
-                          <i class="fa fa-solid fa-pen"></i>
-                        </a>
-                        <a href="" class="btn text-danger font-weight-bold text-xs" data-bs-toggle="modal" data-bs-target="#delete">
-                          <i class="fa fa-solid fa-trash"></i>
-                        </a>
-                      </td>
-                    </tr>
-
+                        </td>
+                        <td>
+                          <p class="text-xs font-weight-bold mb-0">{{$category->title}}l</p>
+                        </td>
+                        <td class="align-middle text-center text-sm">
+                          <span class="badge badge-sm bg-gradient-success"> {{ $category->created_at->format('Y-m-d') }}</span>
+                        </td>
+                        <td class="text-center">
+                          <a href="" class="btn text-secondary font-weight-bold text-xs" data-bs-toggle="modal" data-bs-target="#edit">
+                            <i class="fa fa-solid fa-pen"></i>
+                          </a>
+                          <a href="" class="btn text-danger font-weight-bold text-xs" data-bs-toggle="modal" data-bs-target="#delete">
+                            <i class="fa fa-solid fa-trash"></i>
+                          </a>
+                        </td>
+                      </tr>
+                    @endforeach
                   </tbody>
                 </table>
               </div>
@@ -73,14 +75,15 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form action="" method="post" enctype="multipart/form-data">
+        <form action="categories/save" method="post" enctype="multipart/form-data">
+					@csrf
 					<div class="mb-3">
 						<label for="" class="form-label">Name</label>
-						<input type="text" class="form-control" id="">
+						<input type="text" name="title" class="form-control" id="">
 					</div>
 					<div class="mb-3">
 						<label for="" class="form-label">image</label>
-						<input type="file" class="form-control" id="">
+						<input name="image" type="file" class="form-control" id="">
 					</div>
 					<button type="submit" class="btn btn-primary">Submit</button>
 					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -99,14 +102,14 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form action="" method="post" enctype="multipart/form-data">
+        <form action="categories/update" method="post" enctype="multipart/form-data">
 					<div class="mb-3">
 						<label for="" class="form-label">Name</label>
-						<input type="text" class="form-control" id="">
+						<input name="title" type="text" class="form-control" id="">
 					</div>
 					<div class="mb-3">
 						<label for="" class="form-label">image</label>
-						<input type="file" class="form-control" id="">
+						<input name="img" type="file" class="form-control" id="">
 					</div>
 					<button type="submit" class="btn btn-primary">Submit</button>
 					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
