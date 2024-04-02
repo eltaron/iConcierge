@@ -10,6 +10,8 @@ class ServiceDetail extends Model
     use HasFactory;
     protected $fillable = [
         'service_id',
+        'key',
+        'value'
     ];
     protected $appends = [
         'time_ago'

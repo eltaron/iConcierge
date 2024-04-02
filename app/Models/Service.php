@@ -15,7 +15,8 @@ class Service extends Model
         'description',
         'location',
         'map',
-        'popular'
+        'popular',
+        'price'
     ];
     protected $appends = [
         'time_ago'
@@ -35,5 +36,9 @@ class Service extends Model
     public function images()
     {
         return $this->hasMany('App\Models\Image');
+    }
+    public function image()
+    {
+        return $this->hasOne('App\Models\Image');
     }
 }

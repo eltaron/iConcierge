@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Admin;
 use App\Models\Answer;
 use App\Models\Category;
 use App\Models\Exam;
@@ -27,13 +28,26 @@ class UserController extends Controller
     public function login(Request $request)
     {
         $this->validate($request, [
-            'username' => 'required',
+            'email' => 'required',
             'password' => 'required',
         ]);
-        if (Auth::attempt(['username' => $request->username, 'password' => $request->password, 'only' => 1, 'status' => 1])) {
-            return redirect(aurl('dashboard'))->with('success', 'تم تسجيل الدخول بنجاح');
+        if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
+            $user = User::where('email', $request->email)->first();
+            $admin = Admin::where('user_id', $user->id)->first();
+            if ($admin) {
+                return redirect(url('admin/dashboard'))->with('success', 'user login successfully');
+            } else {
+                return back()->with('faild', 'You are not authorized to access');
+            }
+        } else {
+            $user = User::where('email', $request->email)->first();
+            if (!$user) {
+                return back()->with('faild', 'email not found');
+            } else {
+                return back()->with('faild', 'password not found');
+            }
         }
-        return back()->with('faild', 'راجع بياناتك مرة اخرى');
+        return back()->with('faild', '');
     }
 
     public function index()

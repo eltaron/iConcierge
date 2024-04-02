@@ -15,6 +15,11 @@ class Inqiry extends Model
         'date_to',
         'status',
         'contact_method',
+        'name',
+        'email',
+        'phone',
+        'interseted_services',
+        'spetail_request',
     ];
     protected $appends = [
         'time_ago'
@@ -33,6 +38,10 @@ class Inqiry extends Model
     }
     public function messages()
     {
-        return $this->belongsTo('App\Models\Message');
+        return $this->hasMany('App\Models\Message');
+    }
+    public function last_messages()
+    {
+        return $this->hasOne('App\Models\Message')->latest();
     }
 }

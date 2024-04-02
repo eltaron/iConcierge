@@ -37,6 +37,7 @@ Route::group(['namespace' => 'Api'], function () {
         Route::post("search", 'ServiceController@search');
         Route::post("filter", 'ServiceController@filter');
         Route::get("upcoming", 'ServiceController@upcoming');
+        Route::post("book", 'ServiceController@book');
     });
     Route::group(['prefix' => 'inquires'], function () {
         Route::post("", 'InquireController@index');
@@ -46,12 +47,6 @@ Route::group(['namespace' => 'Api'], function () {
         Route::get("requests", 'InquireController@requests');
         Route::get("done", 'InquireController@done');
         Route::post("schedule", 'InquireController@schedule');
-    });
-    Route::group(['prefix' => 'notifications'], function () {
-        Route::get("", 'NotificationController@index');
-        Route::post("show", 'NotificationController@show');
-        Route::post("delete", 'NotificationController@delete');
-        Route::post("delete/all", 'NotificationController@delete_all');
     });
     Route::group(['prefix' => 'articles'], function () {
         Route::post("", 'ArticleController@index');
@@ -63,5 +58,17 @@ Route::group(['namespace' => 'Api'], function () {
     Route::group(['middleware' => 'auth:api'], function () {
         Route::post("update", 'AuthController@update');
         Route::post("inquires/create", 'InquireController@store');
+        Route::group(['prefix' => 'notifications'], function () {
+            Route::post("", 'NotificationController@index');
+            Route::post("show", 'NotificationController@show');
+            Route::post("read", 'NotificationController@read');
+            Route::post("delete", 'NotificationController@delete');
+            Route::post("delete/all", 'NotificationController@delete_all');
+        });
+        Route::group(['prefix' => 'bookmarks'], function () {
+            Route::post("", 'BookmarkController@index');
+            Route::post("create", 'BookmarkController@create');
+            Route::post("delete", 'BookmarkController@delete');
+        });
     });
 });

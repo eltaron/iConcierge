@@ -138,7 +138,7 @@
           </li>
           <li class="nav-item">
 
-            <a class="{{ Request::is('admin/services*') ? 'active' : '' }} nav-link" href="">
+            <a href="{{url('admin/services')}}" class="{{ Request::is('admin/services*') ? 'active' : '' }} nav-link" >
               <div
                 class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center"
               >

@@ -13,6 +13,7 @@
           <nav aria-label="breadcrumb">
             <h6 class="font-weight-bolder mb-0">Inquiries</h6>
           </nav>
+          @include('admin.includes.navbar')
         </div>
       </nav>
       <!-- End Navbar -->
@@ -76,39 +77,43 @@
                     >Done (20) <i class="mx-1 fa fa-solid fa-paper-plane"></i
                   ></a>
                 </div>
+                @foreach ($inquires as $item)
                 <div class="row mt-4" style="border: 1px soild black">
-                  <div
-                    class="col-12"
-                    style="padding-left: 30px; padding-right: 30px"
-                  >
-                    <h4><i class="fa fa-solid fa-circle"></i> Inquiry about Yacht Rental</h4>
-                    <h6>Can I get a fair discount for 3 days ?</h6>
-                    <span class="nav-link-text ms-1"
-                      >Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-                      Illo, nesciunt! Nesciunt voluptas aspernatur modi ea
-                      dolores laudantium, magnam vitae adipisci quo cum debitis
-                      voluptatem labore rem accusamus, doloribus fugiat
-                      laboriosam.</span
-                    >
-                    <hr />
+
                     <div
-                      class="data d-flex justify-content-between align-items-lg-center"
-                    >
-                      <span class="nav-link-text ms-1"
-                        ><img
-                          style="width:28px;height:28px; border-radius: 50%"
-                          src="{{asset('img/person.png')}}"
-                          alt=""
-                        />
-                        ali ali ali</span
-                      >
-                      <div class="links">
-                        <a href="" class="btn">open inquiry</a>
-                        <a href="" class="btn">accept</a>
-                      </div>
+                        class="col-12"
+                        style="padding-left: 30px; padding-right: 30px"
+                        >
+                        <h4><i class="fa fa-solid fa-circle"></i> Inquiry about {{$item->service->title}}</h4>
+                        {{-- <h6>{{$item->last_messages ? $item->last_messages->content : ''}}</h6> --}}
+                        <span class="nav-link-text ms-1"
+                        >{{$item->last_messages ? $item->last_messages->content : ''}}</span
+                        >
+
+                        <div
+                        class="data d-flex justify-content-between align-items-lg-center"
+                            >
+                        <span class="nav-link-text ms-1"
+                            >
+                            @if($item->user && $item->user->cover)
+                            <img
+                            style="width:28px;height:28px; border-radius: 50%"
+                            src="{{$item->user->cover}}"
+                            alt=""
+                            />
+                            @endif
+                            {{$item->user ? $item->user->username : $item->name}}</span
+                        >
+                        <div class="links">
+                            <a href="{{url('admin/chats')}}" class="btn">open inquiry</a>
+                            <a href="" class="btn">accept</a>
+                        </div>
+                        </div>
+
                     </div>
-                  </div>
-                </div>
+
+
+                </div><hr />@endforeach
               </div>
             </div>
           </div>

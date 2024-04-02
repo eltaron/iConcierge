@@ -13,6 +13,7 @@
           <nav aria-label="breadcrumb">
             <h6 class="font-weight-bolder mb-0">Members</h6>
           </nav>
+          @include('admin.includes.navbar')
         </div>
       </nav>
       <!-- End Navbar -->

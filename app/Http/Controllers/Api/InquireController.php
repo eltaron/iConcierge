@@ -8,9 +8,10 @@ use App\Models\Inqiry;
 
 class InquireController extends Controller
 {
-    public function index(Request $request){
+    public function index(Request $request)
+    {
         try {
-            $data = Inqiry::with(['user', 'service'])->latest()->paginate($request->perpage);
+            $data = Inqiry::with(['user', 'service', 'last_messages'])->latest()->paginate($request->perpage);
             return response()->json([
                 'message' => 'success',
                 'data' => $data
@@ -22,9 +23,10 @@ class InquireController extends Controller
             ]);
         }
     }
-    public function show(Request $request){
+    public function show(Request $request)
+    {
         try {
-            $data = Inqiry::with(['user', 'service','messages'])->find($request->id);
+            $data = Inqiry::with(['user', 'service', 'messages'])->find($request->id);
             return response()->json([
                 'message' => 'success',
                 'data' => $data
@@ -36,7 +38,8 @@ class InquireController extends Controller
             ]);
         }
     }
-    public function store(Request $request){
+    public function store(Request $request)
+    {
         try {
             $validation = $request->validate([
                 'service_id'       => 'required',
@@ -44,6 +47,12 @@ class InquireController extends Controller
                 'date_to'          => 'required',
                 'status'           => 'required',
                 'contact_method'   => 'required',
+
+                'name'                 => 'nullable',
+                'email'                => 'nullable',
+                'phone'                => 'nullable',
+                'interseted_services'  => 'nullable',
+                'spetail_request'      => 'nullable',
             ]);
             $data = new Inqiry();
             $data->user_id = auth()->guard('api')->id();
@@ -51,6 +60,12 @@ class InquireController extends Controller
             $data->date_from = $request->date_from;
             $data->date_to = $request->date_to;
             $data->contact_method = $request->contact_method;
+
+            $data->name = $request->name;
+            $data->email = $request->email;
+            $data->phone = $request->phone;
+            $data->spetail_request = $request->spetail_request;
+            $data->interseted_services = $request->interseted_services;
             $data->save();
             return response()->json([
                 'message' => 'success',
@@ -63,7 +78,8 @@ class InquireController extends Controller
             ]);
         }
     }
-    public function store_message(Request $request){
+    public function store_message(Request $request)
+    {
         try {
             $data = '';
             return response()->json([
@@ -77,7 +93,8 @@ class InquireController extends Controller
             ]);
         }
     }
-    public function services(){
+    public function services()
+    {
         try {
             $data = '';
             return response()->json([
@@ -91,7 +108,8 @@ class InquireController extends Controller
             ]);
         }
     }
-    public function requests(){
+    public function requests()
+    {
         try {
             $data = '';
             return response()->json([
@@ -105,7 +123,8 @@ class InquireController extends Controller
             ]);
         }
     }
-    public function done(){
+    public function done()
+    {
         try {
             $data = '';
             return response()->json([
@@ -119,7 +138,8 @@ class InquireController extends Controller
             ]);
         }
     }
-    public function schedule(Request $request){
+    public function schedule(Request $request)
+    {
         try {
             $data = '';
             return response()->json([
