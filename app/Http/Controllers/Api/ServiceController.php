@@ -88,10 +88,11 @@ class ServiceController extends Controller
     public function show($id)
     {
         try {
-            $data = Service::with(['category', 'images'])->find($id);
+            $data = Service::with(['category', 'images', 'details'])->find($id);
             return response()->json([
                 'message' => 'success',
-                'data' => $data
+                'data' => $data,
+
             ]);
         } catch (\Exception $e) {
             return response()->json([

@@ -17,10 +17,14 @@ Route::group(['namespace' => 'Admin'], function () {
             Route::post("destory", "CategoryController@delete");
         });
         Route::group(['prefix' => 'services'], function () {
+            Route::get("{id}", "ServiceController@show");
             Route::get("", "ServiceController@index");
             Route::post("save", "ServiceController@store");
             Route::post("update", "ServiceController@update");
             Route::post("destory", "ServiceController@delete");
+            Route::post("details/delete", "ServiceController@detailsdestroy");
+            Route::post("details/add", "ServiceController@detailsadd");
+            Route::post("details/edit", "ServiceController@detailsedit");
         });
         Route::get("clients", "ClientController@index");
         Route::get("inquiries", "InquiryController@index");

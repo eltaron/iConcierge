@@ -50,14 +50,20 @@
                             {{ $service->time_ago }} <br>
                           <span class="badge badge-sm bg-gradient-success"> {{ $service->created_at->format('Y-m-d') }}</span>
                         </td>
-                        <td class="text-center">
-                          <button onclick="item_title.value=`{{$service->title}}`;item_id.value={{$service->id}}"  class="btn text-secondary font-weight-bold text-xs" data-bs-toggle="modal" data-bs-target="#edit">
-                            <i class="fa fa-solid fa-pen"></i>
-                          </button>
-                          <button onclick="item_id2.value={{$service->id}}" class="btn text-danger font-weight-bold text-xs" data-bs-toggle="modal" data-bs-target="#delete">
-                            <i class="fa fa-solid fa-trash"></i>
-                          </button>
-                        </td>
+                    </td>
+                    <td class="text-center">
+                      <a href="{{ url('admin/services/' . $service->id) }}" >
+                        <button  style="padding: 0.6rem 1.2rem;"   class="btn text-secondary font-weight-bold text-xs" >
+                            <i class="fa fa-solid fa-eye"></i>
+                        </button>
+                    </a>
+                      <button style="padding: 0.6rem 1.2rem;" onclick="item_title.value={{$service->title}};item_id.value={{$service->id}}"  class="btn text-secondary font-weight-bold text-xs" data-bs-toggle="modal" data-bs-target="#edit">
+                        <i class="fa fa-solid fa-pen"></i>
+                      </button>
+                      <button style="padding: 0.6rem 1.2rem;" onclick="item_id2.value={{$service->id}}" class="btn text-danger font-weight-bold text-xs" data-bs-toggle="modal" data-bs-target="#delete">
+                        <i class="fa fa-solid fa-trash"></i>
+                      </button>
+                    </td>
                       </tr>
                     @endforeach
                   </tbody>

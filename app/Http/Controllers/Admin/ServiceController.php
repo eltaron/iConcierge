@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\Image;
 use Illuminate\Http\Request;
 use App\Models\Service;
+use App\Models\ServiceDetail;
 use Illuminate\Support\Facades\Auth;
 
 class ServiceController extends Controller
@@ -16,6 +17,12 @@ class ServiceController extends Controller
         $services = Service::latest()->get();
         $categories = Category::latest()->get();
         return view('admin.services.index', compact('services', 'categories'));
+    }
+    public function show($id)
+    {
+        $service_details = Service::find($id);
+        $service_id = $id;
+        return view('admin.services.show', compact('service_id', 'service_details'));
     }
     public function store(Request $request)
     {
@@ -111,5 +118,43 @@ class ServiceController extends Controller
         } catch (\Exception $e) {
             return back()->with('faild', 'Service not found');
         }
+    }
+    public function detailsadd(Request $request)
+    {
+        $details = $request->validate([
+            'key' => 'required',
+            'value' => 'required',
+            'service_id' => 'required',
+        ]);
+        ServiceDetail::create($details);
+        return back()->with('success', 'key deleted successfully!');
+    }
+
+    public function detailsedit(Request $request)
+    {
+        $details = $request->validate([
+            'key' => 'required',
+            'value' => 'required',
+            'service_id' => 'required',
+        ]);
+        $serviceDetail = ServiceDetail::findOrFail($request->service_id);
+
+        if ($serviceDetail) {
+            $serviceDetail->key = $details['key'];
+            $serviceDetail->value = $details['value'];
+            $serviceDetail->save();
+
+
+            return back()->with('success', 'key edited successfully!');
+        }
+    }
+    public function detailsdestroy(Request $request)
+    {
+        $detail = ServiceDetail::findOrFail($request->id);
+        if ($detail) {
+            $detail->delete();
+            return back()->with('success', 'key deleted successfully!');
+        }
+        return back()->with('faild', 'key not found');
     }
 }

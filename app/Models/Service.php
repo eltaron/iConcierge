@@ -37,6 +37,10 @@ class Service extends Model
     {
         return $this->hasMany('App\Models\Image');
     }
+    public function details()
+    {
+        return $this->hasMany('App\Models\ServiceDetail');
+    }
     public function image()
     {
         return $this->hasOne('App\Models\Image');
