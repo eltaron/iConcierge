@@ -31,15 +31,15 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($service_details->details as $datail)
+            @foreach ($service_details->details as $detail)
             <tr>
-                <td>{{$datail->key}}</td>
-                <td>{{$datail->value}}</td>
+                <td>{{$detail->key}}</td>
+                <td>{{$detail->value}}</td>
                 <td>
-                    <button style="padding: 0.6rem 1.2rem;" onclick="item_key.value=`{{$datail->key}}`; item_value.value=`{{$datail->value}}`;item_id.value={{$datail->id}}"  class="btn text-secondary font-weight-bold text-xs" data-bs-toggle="modal" data-bs-target="#edit">
+                    <button style="padding: 0.6rem 1.2rem;" onclick="item_key.value=`{{$detail->key}}`; item_value.value=`{{$detail->value}}`;item_id.value={{$detail->id}}"  class="btn text-secondary font-weight-bold text-xs" data-bs-toggle="modal" data-bs-target="#edit">
                         <i class="fa fa-solid fa-pen"></i>
                     </button>
-                    <button style="padding: 0.6rem 1.2rem;" onclick="item_id2.value={{$datail->id}}" class="btn text-danger font-weight-bold text-xs" data-bs-toggle="modal" data-bs-target="#delete">
+                    <button style="padding: 0.6rem 1.2rem;" onclick="item_id2.value={{$detail->id}}" class="btn text-danger font-weight-bold text-xs" data-bs-toggle="modal" data-bs-target="#delete">
                         <i class="fa fa-solid fa-trash"></i>
                     </button>
                 </td>

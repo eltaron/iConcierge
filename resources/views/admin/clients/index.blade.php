@@ -43,7 +43,8 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
+                        @foreach ($users as $user)
+<tr>
                         <td>
                           <div class="d-flex px-2 py-1">
                             <div>
@@ -56,7 +57,7 @@
                             <div
                               class="d-flex flex-column justify-content-center"
                             >
-                              <h6 class="mb-0 text-sm">John Michael</h6>
+                              <h6 class="mb-0 text-sm">{{$user->username}}</h6>
                             </div>
                           </div>
                         </td>
@@ -64,12 +65,12 @@
                           <div
                             class="d-flex flex-column justify-content-center"
                           >
-                            <h6 class="mb-0 text-sm">john@creative-tim.com</h6>
+                            <h6 class="mb-0 text-sm">{{$user->email}}</h6>
                           </div>
                         </td>
                         <td style="text-align: left" class="align-middle">
                           <span class="text-secondary text-xs font-weight-bold"
-                            >010010010010</span
+                            >{{$user->phone}}</span
                           >
                         </td>
                         <td class="align-middle text-sm">
@@ -77,18 +78,18 @@
                             >Free</span
                           >
                         </td>
-                        <td class="align-middle">
-                          <a
-                            href="javascript:;"
-                            class="text-secondary font-weight-bold text-xs"
-                            data-toggle="tooltip"
-                            data-original-title="Edit user"
-                          >
-                            <i class="fa fa-brands fa-flickr"></i>
+                        <td>
+                            <button style="padding: 0.6rem 1.2rem;" onclick="document.getElementById('username').value='{{$user->username}}'; document.getElementById('id').value='{{$user->id}}';  document.getElementById('phone').value='{{$user->phone}}'; document.getElementById('email').value='{{$user->email}}';" class="btn text-secondary font-weight-bold text-xs" data-bs-toggle="modal" data-bs-target="#edit">
+                                <i class="fa fa-solid fa-pen"></i>
+                            </button>
 
-                          </a>
+                            <button style="padding: 0.6rem 1.2rem;" onclick="item_id2.value={{$user->id}}" class="btn text-danger font-weight-bold text-xs" data-bs-toggle="modal" data-bs-target="#delete">
+                                <i class="fa fa-solid fa-trash"></i>
+                            </button>
                         </td>
                       </tr>
+                        @endforeach
+
                       <tr>
                         <td>
                           <div class="d-flex px-2 py-1">
@@ -136,6 +137,7 @@
                     </tbody>
                     <tfoot>
                       <tr>
+                        <th>#</th>
                         <th>Name</th>
                         <th>Email</th>
                         <th style="text-align: left">Phone number</th>
@@ -151,7 +153,7 @@
         </div>
       </div>
     </main>
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    {{-- <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
@@ -196,5 +198,70 @@
 
         </div>
       </div>
+    </div> --}}
+    <div class="modal fade" id="edit" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">Edit Member</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form action="{{url('admin/clients/edit')}}" method="post" enctype="multipart/form-data">
+                @csrf
+                <input type="hidden" name="id" id="id" value="">
+              <div class="mb-3">
+                <label for="" class="form-label">User Name</label>
+                <input type="text" class="form-control" id="username" name="username">
+              </div>
+              <div class="mb-3">
+                <label for="" class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" name="email">
+              </div>
+              <div class="mb-3">
+                <label for="" class="form-label">Phone</label>
+                <input type="text" class="form-control" id="phone" name="phone">
+              </div>
+              <div class="mb-3">
+                <label for="" class="form-label">Type</label>
+                <select class="form-select" aria-label="Default select example">
+                  <option value="1">One</option>
+                  <option value="2">Two</option>
+                  <option value="3">Three</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label for="" class="form-label">image</label>
+                <input type="file" class="form-control" id="">
+              </div>
+              <button type="submit" class="btn btn-primary">Edit</button>
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
+            </form>
+          </div>
+
+        </div>
+      </div>
     </div>
+    <div class="modal fade" id="delete" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel"> Delete Member</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+            <form action="{{url('admin/clients/delete')}}" method="post" >
+                @csrf
+                <input type="hidden" name="id" id="item_id2">
+                <div class="mb-3">
+                    <p> Are you sure to delete this client ? </p>
+                </div>
+                <button type="submit" class="btn btn-danger">Delete</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </form>
+      </div>
+    </div>
+  </div>
+</div>
 @endsection

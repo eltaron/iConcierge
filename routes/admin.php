@@ -27,6 +27,8 @@ Route::group(['namespace' => 'Admin'], function () {
             Route::post("details/edit", "ServiceController@detailsedit");
         });
         Route::get("clients", "ClientController@index");
+        Route::post("clients/delete", "ClientController@delete");
+        Route::post("clients/edit", "ClientController@edit");
         Route::get("inquiries", "InquiryController@index");
         Route::get("activities", "ActivityController@index");
         Route::get("chats", "ChatController@index");
