@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Booking;
 use App\Models\Category;
 use App\Models\Service;
+use App\Models\ServiceDetail;
 use Illuminate\Http\Request;
 
 class ServiceController extends Controller
@@ -88,11 +89,12 @@ class ServiceController extends Controller
     public function show($id)
     {
         try {
-            $data = Service::with(['category', 'images', 'details'])->find($id);
+            $data = Service::with(['category', 'images', 'details.images'])->find($id);
+            $logo = ServiceDetail::where(['service_id' => $data->id, 'type' => 'logo'])->with('image')->first();
             return response()->json([
                 'message' => 'success',
                 'data' => $data,
-
+                'logo' => $logo
             ]);
         } catch (\Exception $e) {
             return response()->json([

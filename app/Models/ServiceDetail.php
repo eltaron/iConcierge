@@ -24,4 +24,12 @@ class ServiceDetail extends Model
     {
         return $this->belongsTo('App\Models\Service');
     }
+    public function image()
+    {
+        return $this->hasOne('App\Models\Image', 'service_detail', 'id');
+    }
+    public function images()
+    {
+        return $this->hasMany('App\Models\Image', 'service_detail', 'id');
+    }
 }

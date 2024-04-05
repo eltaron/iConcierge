@@ -57,7 +57,12 @@
                             <i class="fa fa-solid fa-eye"></i>
                         </button>
                     </a>
-                      <button style="padding: 0.6rem 1.2rem;" onclick="item_title.value={{$service->title}};item_id.value={{$service->id}}"  class="btn text-secondary font-weight-bold text-xs" data-bs-toggle="modal" data-bs-target="#edit">
+                      <button style="padding: 0.6rem 1.2rem;" onclick="
+                      item_title.value=`{{$service->title}}`;
+                      item_id.value=`{{$service->id}}`;
+                      item_description.textContent=`{{$service->description}}`;
+                      item_map.value=`{{$service->map}}`;
+                      "  class="btn text-secondary font-weight-bold text-xs" data-bs-toggle="modal" data-bs-target="#edit">
                         <i class="fa fa-solid fa-pen"></i>
                       </button>
                       <button style="padding: 0.6rem 1.2rem;" onclick="item_id2.value={{$service->id}}" class="btn text-danger font-weight-bold text-xs" data-bs-toggle="modal" data-bs-target="#delete">
@@ -141,15 +146,15 @@
                 </div>
                 <div class="mb-3">
                     <label for="" class="form-label">Description</label>
-                    <textarea name="description" class="form-control" ></textarea>
+                    <textarea name="description" id="item_description" class="form-control" ></textarea>
                 </div>
                 <div class="mb-3">
                     <label for="" class="form-label">Map location</label>
-                    <textarea name="map" class="form-control" ></textarea>
+                    <textarea name="map" id="item_map" class="form-control" ></textarea>
                 </div>
                 <div class="mb-3">
                     <label for="" class="form-label">price</label>
-                    <input name="price" type="number"  class="form-control" >
+                    <input name="price" type="number" id="item_price"  class="form-control" >
                 </div>
                 <div class="mb-3">
                     <label for="" class="form-label">images</label>

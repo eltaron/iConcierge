@@ -25,6 +25,9 @@ Route::group(['namespace' => 'Admin'], function () {
             Route::post("details/delete", "ServiceController@detailsdestroy");
             Route::post("details/add", "ServiceController@detailsadd");
             Route::post("details/edit", "ServiceController@detailsedit");
+
+            Route::post("image/add", "ServiceController@imageadd");
+            Route::post("image/delete", "ServiceController@imagedelete");
         });
         Route::get("clients", "ClientController@index");
         Route::post("clients/delete", "ClientController@delete");

@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Route;
 Route::group(['namespace' => 'Api'], function () {
     Route::get("test", 'HomeController@index');
     Route::post("contact", 'HomeController@contact');
+    
     Route::post("login", 'AuthController@login');
     Route::post("register", 'AuthController@register');
     Route::post("forgetpassword", 'AuthController@forgetpassword');
@@ -55,9 +56,10 @@ Route::group(['namespace' => 'Api'], function () {
     Route::group(['prefix' => 'faqs'], function () {
         Route::post("", 'FaqController@index');
     });
+    Route::post("inquires/create", 'InquireController@store');
     Route::group(['middleware' => 'auth:api'], function () {
         Route::post("update", 'AuthController@update');
-        Route::post("inquires/create", 'InquireController@store');
+        Route::post("profile", 'AuthController@profile');
         Route::group(['prefix' => 'notifications'], function () {
             Route::post("", 'NotificationController@index');
             Route::post("show", 'NotificationController@show');

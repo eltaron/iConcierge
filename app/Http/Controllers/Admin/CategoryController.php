@@ -27,7 +27,8 @@ class CategoryController extends Controller
             $fileNameWithExtension = $file->getClientOriginalName();
             $fileName = pathinfo($fileNameWithExtension, PATHINFO_FILENAME);
             $extension = $file->getClientOriginalExtension();
-            $imageName = $fileName . '_' . time() . '.' . $extension;
+            $name = $this->generateCode();
+            $imageName = $name . '_' . time() . '.' . $extension;
             $path = $file->move(public_path('storage/categories/' . $mainpath), $imageName);
             $data->image = url('') . '/storage/categories/' . $mainpath . $imageName;
         }
@@ -53,7 +54,8 @@ class CategoryController extends Controller
                     $fileNameWithExtension = $file->getClientOriginalName();
                     $fileName = pathinfo($fileNameWithExtension, PATHINFO_FILENAME);
                     $extension = $file->getClientOriginalExtension();
-                    $imageName = $fileName . '_' . time() . '.' . $extension;
+                    $name = $this->generateCode();
+                    $imageName = $name . '_' . time() . '.' . $extension;
                     $path = $file->move(public_path('storage/categories/' . $mainpath), $imageName);
                     $data->image = url('') . '/storage/categories/' . $mainpath . $imageName;
                 }
@@ -64,6 +66,19 @@ class CategoryController extends Controller
         } catch (\Exception $e) {
             return back()->with('faild', 'Category not found');
         }
+    }
+    function generateCode()
+    {
+        $code = mt_rand(100000, 999999);
+        if ($this->codeExists($code)) {
+            return $this->generateCode();
+        }
+        return $code;
+    }
+
+    function codeExists($code)
+    {
+        return Category::where('image', $code)->exists();
     }
     public function delete(Request $request)
     {

@@ -55,6 +55,7 @@ class AuthController extends Controller
             ]);
         }
     }
+    
     public function register(Request $request)
     {
         try {
@@ -235,6 +236,21 @@ class AuthController extends Controller
     {
         try {
             $data = '';
+            return response()->json([
+                'message' => 'success',
+                'data' => $data
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'error',
+                'data' => $e->getMessage()
+            ]);
+        }
+    }
+    public function profile(Request $request)
+    {
+        try {
+            $data = User::find(auth()->guard('api')->id());
             return response()->json([
                 'message' => 'success',
                 'data' => $data

@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Models\Service;
 use App\Models\ServiceDetail;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class ServiceController extends Controller
 {
@@ -45,12 +46,13 @@ class ServiceController extends Controller
                 $fileNameWithExtension = $file->getClientOriginalName();
                 $fileName = pathinfo($fileNameWithExtension, PATHINFO_FILENAME);
                 $extension = $file->getClientOriginalExtension();
-                $imageName = $fileName . '_' . time() . '.' . $extension;
-                $path = $file->move(public_path('storage/categories/' . $mainpath), $imageName);
+                $name = str_replace(' ', '_', $fileName);
+                $imageName = $name . '_' . time() . '.' . $extension;
+                $path = $file->move(public_path('storage/services/' . $mainpath), $imageName);
                 $image = new Image();
                 $image->service_id = $data->id;
                 $image->filename = $imageName;
-                $image->url = url('') . '/storage/categories/' . $mainpath . $imageName;
+                $image->url = url('') . '/storage/services/' . $mainpath . $imageName;
                 $image->save();
             }
         }
@@ -92,11 +94,11 @@ class ServiceController extends Controller
                         $fileName = pathinfo($fileNameWithExtension, PATHINFO_FILENAME);
                         $extension = $file->getClientOriginalExtension();
                         $imageName = $fileName . '_' . time() . '.' . $extension;
-                        $path = $file->move(public_path('storage/categories/' . $mainpath), $imageName);
+                        $path = $file->move(public_path('storage/services/' . $mainpath), $imageName);
                         $image = new Image();
                         $image->service_id = $data->id;
                         $image->filename = $imageName;
-                        $image->url = url('') . '/storage/categories/' . $mainpath . $imageName;
+                        $image->url = url('') . '/storage/services/' . $mainpath . $imageName;
                         $image->save();
                     }
                 }
@@ -112,6 +114,17 @@ class ServiceController extends Controller
         try {
             $data = Service::find($request->id);
             if ($data) {
+                $details = ServiceDetail::where('service_id', $request->id)->get();
+                foreach ($details as $d) {
+                    $d->delete();
+                }
+                $images = Image::where('service_id', $request->id)->get();
+                foreach ($images as $i) {
+                    if (Storage::disk('public')->exists($i->url)) {
+                        Storage::disk('public')->delete($i->url);
+                    }
+                    $i->delete();
+                }
                 $data->delete();
             }
             return back()->with('success', 'Service deleted successfully!');
@@ -123,18 +136,51 @@ class ServiceController extends Controller
     {
         $details = $request->validate([
             'key' => 'required',
-            'value' => 'required',
+            'value' => 'nullable',
             'service_id' => 'required',
         ]);
-        ServiceDetail::create($details);
-        return back()->with('success', 'key deleted successfully!');
+        $detail = new ServiceDetail();
+        $detail->key = $request->key;
+        $detail->service_id = $request->service_id;
+        if (strtolower($detail->key) == 'map') {
+            preg_match('/src="([^"]+)"/', $request->value, $match);
+            $src = $match[1] ?? null;
+            $detail->value = $src;
+            $detail->type = 'map';
+        } elseif (strtolower($detail->key) == 'logo') {
+            $detail->type = 'logo';
+        } elseif (strtolower($detail->key) == 'menu') {
+            $detail->type = 'menu';
+        } else {
+            $detail->value = $request->value;
+            $detail->type = isset($files) ? 'image' : '';
+        }
+        $detail->save();
+        $files = $request->file('images');
+        if (isset($files)) {
+            foreach ($files as $file) {
+                $mainpath = date("Y-m-d") . '/';
+                $fileNameWithExtension = $file->getClientOriginalName();
+                $fileName = pathinfo($fileNameWithExtension, PATHINFO_FILENAME);
+                $extension = $file->getClientOriginalExtension();
+                $name = str_replace(' ', '_', $fileName);;
+                $imageName = $name . '_' . time() . '.' . $extension;
+                $path = $file->move(public_path('storage/details/services/' . $mainpath), $imageName);
+                $image = new Image();
+                $image->service_detail = $detail->id;
+                $image->filename = $imageName;
+                $image->url = url('') . '/storage/details/services/' . $mainpath . $imageName;
+                $image->save();
+            }
+        }
+        $detail->save();
+        return back()->with('success', 'key added successfully!');
     }
-
     public function detailsedit(Request $request)
     {
         $details = $request->validate([
             'key' => 'required',
-            'value' => 'required',
+            'value' => 'nullable',
             'service_id' => 'required',
         ]);
         $serviceDetail = ServiceDetail::findOrFail($request->service_id);
@@ -142,9 +188,27 @@ class ServiceController extends Controller
         if ($serviceDetail) {
             $serviceDetail->key = $details['key'];
             $serviceDetail->value = $details['value'];
+            if (strtolower($details['key']) == 'logo') {
+                $serviceDetail->type = 'logo';
+            }
             $serviceDetail->save();
-
-
+            $files = $request->file('images');
+            if (isset($files)) {
+                foreach ($files as $file) {
+                    $mainpath = date("Y-m-d") . '/';
+                    $fileNameWithExtension = $file->getClientOriginalName();
+                    $fileName = pathinfo($fileNameWithExtension, PATHINFO_FILENAME);
+                    $extension = $file->getClientOriginalExtension();
+                    $name = str_replace(' ', '_', $fileName);
+                    $imageName = $name . '_' . time() . '.' . $extension;
+                    $path = $file->move(public_path('storage/details/services/' . $mainpath), $imageName);
+                    $image = new Image();
+                    $image->service_detail = $serviceDetail->id;
+                    $image->filename = $imageName;
+                    $image->url = url('') . '/storage/details/services/' . $mainpath . $imageName;
+                    $image->save();
+                }
+            }
             return back()->with('success', 'key edited successfully!');
         }
     }
@@ -152,8 +216,57 @@ class ServiceController extends Controller
     {
         $detail = ServiceDetail::findOrFail($request->id);
         if ($detail) {
+            $images = Image::where('service_detail', $request->id)->get();
+            foreach ($images as $i) {
+                if (Storage::disk('public')->exists($i->url)) {
+                    Storage::disk('public')->delete($i->url);
+                }
+                $i->delete();
+            }
             $detail->delete();
             return back()->with('success', 'key deleted successfully!');
+        }
+        return back()->with('faild', 'key not found');
+    }
+    public function imageadd(Request $request)
+    {
+        $details = $request->validate([
+            'images' => 'required',
+            'service_id' => 'required',
+        ]);
+        $files = $request->file('images');
+        if (isset($files)) {
+            foreach ($files as $file) {
+                $mainpath = date("Y-m-d") . '/';
+                $fileNameWithExtension = $file->getClientOriginalName();
+                $fileName = pathinfo($fileNameWithExtension, PATHINFO_FILENAME);
+                $extension = $file->getClientOriginalExtension();
+                $name = str_replace(' ', '_', $fileName);;
+                $imageName = $name . '_' . time() . '.' . $extension;
+                $path = $file->move(public_path('storage/services/' . $mainpath), $imageName);
+                $image = new Image();
+                $image->service_id = $request->service_id;
+                $image->filename = $imageName;
+                $image->url = url('') . '/storage/services/' . $mainpath . $imageName;
+                $image->save();
+            }
+        }
+        return back()->with('success', 'Images added successfully!');
+    }
+    public function imagedelete(Request $request)
+    {
+        $detail = Image::findOrFail($request->id);
+        if ($detail) {
+            $images = Image::where('service_id', $detail->service_id)->count();
+            if ($images == 1) {
+                return back()->with('faild', 'can\'t delete this image');
+            } else {
+                if (Storage::disk('public')->exists($detail->url)) {
+                    Storage::disk('public')->delete($detail->url);
+                }
+                $detail->delete();
+                return back()->with('success', 'key deleted successfully!');
+            }
         }
         return back()->with('faild', 'key not found');
     }

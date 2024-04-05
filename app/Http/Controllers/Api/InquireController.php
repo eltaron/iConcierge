@@ -45,8 +45,8 @@ class InquireController extends Controller
                 'service_id'       => 'required',
                 'date_from'        => 'required',
                 'date_to'          => 'required',
-                'status'           => 'required',
-                'contact_method'   => 'required',
+                'status'           => 'nullable',
+                'contact_method'   => 'nullable',
 
                 'name'                 => 'nullable',
                 'email'                => 'nullable',
@@ -55,7 +55,7 @@ class InquireController extends Controller
                 'spetail_request'      => 'nullable',
             ]);
             $data = new Inqiry();
-            $data->user_id = auth()->guard('api')->id();
+            $data->user_id = auth()->guard('api')->id() ? auth()->guard('api')->id() : null;
             $data->service_id = $request->service_id;
             $data->date_from = $request->date_from;
             $data->date_to = $request->date_to;
