@@ -55,7 +55,7 @@
                           <p class="text-center text-xs font-weight-bold mb-0"> {{ $item->created_at->format('Y-m-d') }}</p>
                         </td>
                             <td class="text-center">
-                            <button onclick="item_id.value={{$item->id}}" class="btn text-danger font-weight-bold text-xs" data-bs-toggle="modal" data-bs-target="#delete">
+                            <button onclick="item_id2.value={{$item->id}}" class="btn text-danger font-weight-bold text-xs" data-bs-toggle="modal" data-bs-target="#delete">
                                 <i class="fa fa-solid fa-trash"></i>
                             </button>
                             </td>
@@ -71,6 +71,27 @@
         </div>
       </div>
     </div>
+    <div class="modal fade" id="delete" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel"> Delete notification</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+            <form action="{{url('admin/notifications/delete')}}" method="post" >
+                @csrf
+                <input type="hidden" name="id" id="item_id2">
+                <div class="mb-3">
+                    <p> Are you sure to delete this notification ? </p>
+                </div>
+                <button type="submit" class="btn btn-danger">Delete</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </form>
+      </div>
+    </div>
+  </div>
+</div>
   </main>
 
 

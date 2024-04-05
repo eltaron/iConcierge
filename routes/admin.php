@@ -38,6 +38,7 @@ Route::group(['namespace' => 'Admin'], function () {
     });
     Route::group(['prefix'=>"notifications"],function(){
         Route::get("","NotificationController@index");
+        Route::post("delete", "NotificationController@delete");
     });
     Route::group(['prefix'=>"articles"],function(){
         Route::get("","ArticleController@index");
