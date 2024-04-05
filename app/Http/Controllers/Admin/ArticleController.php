@@ -69,13 +69,13 @@ public function update(Request $request)
         'content' => 'required',
     ]);
 
-    $article = Article::findOrFail($request->id); // Fetch the article by ID
-    $articleD = ArticleDetail::where("article_id", $request->id)->first(); // Fetch the article detail
+    $article = Article::findOrFail($request->id);
+    $articleD = ArticleDetail::where("article_id", $request->id)->first();
 
     $article->title = $data['title'];
     $articleD->content = $data['content'];
 
-    // Handle image upload
+    
     $file = $request->file('image');
     if ($file) {
         $mainpath = date("Y-m-d") . '/';
