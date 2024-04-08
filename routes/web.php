@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Artisan;
 Route::group(['namespace' => 'Web'], function () {
     Route::get('/', function () {
         Artisan::call('cache:clear');
-        return redirect(url('home'));
+        return redirect(url('admin'));
     });
-    Route::get("home", 'HomeController@index');
+    // Route::get("home", 'HomeController@index');
 });

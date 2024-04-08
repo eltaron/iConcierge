@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\PromoCode;
+use App\Models\Subscription;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
@@ -23,12 +24,12 @@ class AuthController extends Controller
                 'password' => $request->password,
             ];
             if (auth()->attempt($credentials)) {
-                $user = User::where('email', $request->email)->first();
+                $user = User::where('email', $request->email)->with('subscription')->first();
                 if ($user->api_token == null) {
                     User::where('id', $user->id)->update([
                         'api_token' => Hash::make(rand(100000, 99999999))
                     ]);
-                    $user = User::where('email', $request->email)->first();
+                    $user = User::with('subscription')->where('email', $request->email)->first();
                 }
                 return response()->json([
                     'message' => 'success',
@@ -55,7 +56,7 @@ class AuthController extends Controller
             ]);
         }
     }
-    
+
     public function register(Request $request)
     {
         try {
@@ -120,11 +121,13 @@ class AuthController extends Controller
                 $headers = "MIME-Version: 1.0" . "\r\n";
                 $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
                 $headers .= "From: <support@iconcierge.com>";
-                mail($to, $subject, $txt, $headers);
-                return response()->json([
-                    'message' => 'success',
-                    'data' => 'email send successful'
-                ]);
+                $mailSent = mail($to, $subject, $txt, $headers);
+                if ($mailSent) {
+                    return response()->json([
+                        'message' => 'success',
+                        'data' => 'email send successful'
+                    ]);
+                }
             }
             return response()->json([
                 'message' => 'error',
@@ -141,15 +144,15 @@ class AuthController extends Controller
     public function newpassword(Request $request)
     {
         try {
-            $user = User::where('email',$request->email)->first();
-            if($user){
+            $user = User::where('email', $request->email)->first();
+            if ($user) {
                 $user->password = Hash::make($request->password);
                 $user->save();
                 return response()->json([
                     'message' => 'success',
                     'data' => $user
                 ]);
-            }else{
+            } else {
                 return response()->json([
                     'message' => 'error',
                     'data' => 'user not found'
@@ -235,7 +238,9 @@ class AuthController extends Controller
     public function changetype(Request $request)
     {
         try {
-            $data = '';
+            $data = User::find(auth()->guard('api')->id());
+            $data->type = $request->type;
+            $data->save();
             return response()->json([
                 'message' => 'success',
                 'data' => $data
@@ -247,10 +252,46 @@ class AuthController extends Controller
             ]);
         }
     }
+    public function subscribe(Request $request)
+    {
+        try {
+            $data = new Subscription();
+            $data->type = $request->type;
+            $data->user_id = auth()->guard('api')->id();
+            $data->end_at = $request->end_at;
+            $data->save();
+            return response()->json([
+                'message' => 'success',
+                'data' => $data
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'error',
+                'data' => $e->getMessage()
+            ]);
+        }
+    }
+
     public function profile(Request $request)
     {
         try {
+            $data = User::with('subscription')->find(auth()->guard('api')->id());
+            return response()->json([
+                'message' => 'success',
+                'data' => $data
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'error',
+                'data' => $e->getMessage()
+            ]);
+        }
+    }
+    public function delete(Request $request)
+    {
+        try {
             $data = User::find(auth()->guard('api')->id());
+            $data->delete();
             return response()->json([
                 'message' => 'success',
                 'data' => $data

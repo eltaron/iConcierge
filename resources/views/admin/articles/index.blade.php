@@ -48,7 +48,7 @@
                         </td>
                         <td>
                           <div class="d-flex flex-column justify-content-center">
-                            <h6 class="mb-0 text-sm">{{$item->title}}</h6>
+                            <h6 class="mb-0 text-sm">{{ \Illuminate\Support\Str::limit($item->title, 10) }}</h6>
                           </div>
                         </td>
                         <td>
@@ -59,7 +59,7 @@
                         <td>
                             @if ($item->detail)
                             <div class="d-flex flex-column justify-content-center">
-                                <h6 class="mb-0 text-sm">{{$item->detail->content}}</h6>
+                                <h6 class="mb-0 text-sm">{{ \Illuminate\Support\Str::limit($item->detail->content, 40) }}</h6>
                             </div>
                             @endif
 
@@ -69,7 +69,7 @@
                           <span class="badge badge-sm bg-gradient-success"> {{ $item->created_at->format('Y-m-d') }}</span>
                         </td>
                         <td class="text-center">
-                          <button onclick="item_id.value={{$item->id}} ; a.value='{{ $item->title }}'; content.value='{{ addslashes($item->detail->content) }}'" class="btn text-secondary font-weight-bold text-xs" data-bs-toggle="modal" data-bs-target="#edit">
+                          <button onclick='item_id.value={{$item->id}} ; a.value=`{{ $item->title }}`; content.value=`{{ addslashes($item->detail->content) }}`' class="btn text-secondary font-weight-bold text-xs" data-bs-toggle="modal" data-bs-target="#edit">
                             <i class="fa fa-solid fa-pen"></i>
                           </button>
 
@@ -104,7 +104,7 @@
                 </div>
                 <div class="mb-3">
                     <label for="" class="form-label">content</label>
-                    <input type="text" name="content" class="form-control" id="">
+                    <textarea name="content" class="form-control" id=""></textarea>
                 </div>
                 <div class="mb-3">
                     <label for="" class="form-label">image</label>
@@ -133,7 +133,7 @@
                 </div>
                 <div class="mb-3">
                     <label for="" class="form-label">content</label>
-                    <input type="text" name="content" class="form-control" id="content">
+                    <textarea name="content" class="form-control" id="content"></textarea>
                 </div>
                 <div class="mb-3">
                     <label for="" class="form-label">image</label>

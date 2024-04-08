@@ -84,7 +84,7 @@
                         class="col-12"
                         style="padding-left: 30px; padding-right: 30px"
                         >
-                        <h4><i class="fa fa-solid fa-circle"></i> Inquiry about {{$item->service->title}}</h4>
+                        <h4><i class="fa fa-solid fa-circle"></i> Inquiry about </h4>
                         {{-- <h6>{{$item->last_messages ? $item->last_messages->content : ''}}</h6> --}}
                         <span class="nav-link-text ms-1"
                         >{{$item->last_messages ? $item->last_messages->content : ''}}</span

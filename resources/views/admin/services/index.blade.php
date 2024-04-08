@@ -1,4 +1,8 @@
 @extends('admin.layouts.app')
+@push('style')
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+<script type="text/javascript" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+@endpush
 @section('content')
   <main class="main-content position-relative max-height-vh-100 h-100 mt-1 border-radius-lg ">
     @include('admin.includes.message')
@@ -16,14 +20,20 @@
       <div class="row">
         <div class="col-12">
           <div class="card mb-4">
-            <div class="card-header pb-0">
-							<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-									Add service
-								</button>
+            <div class="card-header pb-0 d-flex align-items-center justify-content-between">
+                <button type="button" style="width: 230px" class="mb-0 btn btn-primary me-3" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    + Add service
+                </button>
+                <select name="category" style="width: 230px" class="form-control" id="selectBoxId2">
+                    <option value="{{url('admin/services')}}" {{$id == 0 ? 'selected' : ''}}>All services</option>
+                    @foreach ($categories as $item)
+                        <option value="{{url('admin/services/categories/'.$item->id)}}" {{$id == $item->id ? 'selected' : ''}}>{{$item->title}}</option>
+                    @endforeach
+                </select>
             </div>
             <div class="card-body px-0 pt-0 pb-2">
-              <div class="table-responsive p-0">
-                <table class="table align-items-center mb-0">
+              <div class="table-responsive p-3">
+                <table class="table align-items-center mb-0" id="example">
                   <thead>
                     <tr>
                         <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">#</th>
@@ -38,11 +48,14 @@
                     @foreach($services as $i => $service)
                         <tr>
                             <td><p class="text-center text-xs font-weight-bold mb-0">{{$i + 1}}</p></td>
-                        <td >
+                        <td class="d-flex align-items-center">
                             @if ($service->image)
                             <img style="border-radius:10%" width="100" height="100" src="{{$service->image->url}}" alt="">
                             @endif
-                          <b class=" ms-2">{{$service->title}}</b>
+                          <b class=" ms-2">
+                            {{$service->title}} <br>
+                            {!! $service->popular == 1 ? '<span class="badge badge-sm bg-gradient-primary"> popular service</span>' : '' !!}
+                            </b>
                         </td>
                         <td><p class=" text-xs font-weight-bold mb-0">{{$service->category->title}}</p></td>
 
@@ -62,6 +75,7 @@
                       item_id.value=`{{$service->id}}`;
                       item_description.textContent=`{{$service->description}}`;
                       item_map.value=`{{$service->map}}`;
+                      document.getElementById('selectBoxId').value = `{{$service->category_id}}`;
                       "  class="btn text-secondary font-weight-bold text-xs" data-bs-toggle="modal" data-bs-target="#edit">
                         <i class="fa fa-solid fa-pen"></i>
                       </button>
@@ -111,7 +125,7 @@
                     <input name="images[]" type="file" multiple class="form-control" id="">
                 </div>
                 <div class="mb-3">
-                    <input name="popular" type="radio" value="1">
+                    <input name="popular" type="checkbox" value="1">
                     <label for="" class="form-label">make it popular</label>
                 </div>
                 <div class="mb-3">
@@ -161,12 +175,12 @@
                     <input name="images[]" type="file" multiple class="form-control" id="">
                 </div>
                 <div class="mb-3">
-                    <input name="popular" type="radio" value="1">
+                    <input name="popular" type="checkbox"  value="1">
                     <label for="" class="form-label">make it popular</label>
                 </div>
                 <div class="mb-3">
                     <label for="" class="form-label">category</label>
-                    <select name="category" class="form-control" id="">
+                    <select name="category" class="form-control" id="selectBoxId">
                         @foreach ($categories as $item)
                         <option value="{{$item->id}}">{{$item->title}}</option>
                         @endforeach
@@ -201,3 +215,17 @@
   </div>
 </div>
 @endsection
+@push('script')
+<script>
+    $(document).ready(function() {
+        $('#example').DataTable();
+    });
+</script>
+<script>
+    document.getElementById('selectBoxId2').addEventListener('change', function() {
+        var selectedOption = this.options[this.selectedIndex];
+        var url = selectedOption.value;
+        window.location.href = url;
+    });
+</script>
+@endpush

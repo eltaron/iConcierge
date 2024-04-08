@@ -17,7 +17,6 @@ use Illuminate\Support\Facades\Route;
 Route::group(['namespace' => 'Api'], function () {
     Route::get("test", 'HomeController@index');
     Route::post("contact", 'HomeController@contact');
-    
     Route::post("login", 'AuthController@login');
     Route::post("register", 'AuthController@register');
     Route::post("forgetpassword", 'AuthController@forgetpassword');
@@ -39,6 +38,7 @@ Route::group(['namespace' => 'Api'], function () {
         Route::post("filter", 'ServiceController@filter');
         Route::get("upcoming", 'ServiceController@upcoming');
         Route::post("book", 'ServiceController@book');
+        Route::post("booking", 'ServiceController@booking');
     });
     Route::group(['prefix' => 'inquires'], function () {
         Route::post("", 'InquireController@index');
@@ -58,7 +58,9 @@ Route::group(['namespace' => 'Api'], function () {
     });
     Route::post("inquires/create", 'InquireController@store');
     Route::group(['middleware' => 'auth:api'], function () {
+        Route::post("account/delete", 'AuthController@delete');
         Route::post("update", 'AuthController@update');
+        Route::post("subscribe", 'AuthController@subscribe');
         Route::post("profile", 'AuthController@profile');
         Route::group(['prefix' => 'notifications'], function () {
             Route::post("", 'NotificationController@index');
@@ -71,6 +73,12 @@ Route::group(['namespace' => 'Api'], function () {
             Route::post("", 'BookmarkController@index');
             Route::post("create", 'BookmarkController@create');
             Route::post("delete", 'BookmarkController@delete');
+        });
+        Route::group(['prefix' => 'bookings'], function () {
+            Route::post("all", 'BookingController@all');
+            Route::post("past", 'BookingController@past');
+            Route::post("upcoming", 'BookingController@upcoming');
+            Route::post("ongoing", 'BookingController@ongoing');
         });
     });
 });

@@ -17,6 +17,8 @@ Route::group(['namespace' => 'Admin'], function () {
             Route::post("destory", "CategoryController@delete");
         });
         Route::group(['prefix' => 'services'], function () {
+
+            Route::get("categories/{id}", "ServiceController@categories");
             Route::get("{id}", "ServiceController@show");
             Route::get("", "ServiceController@index");
             Route::post("save", "ServiceController@store");
@@ -36,14 +38,14 @@ Route::group(['namespace' => 'Admin'], function () {
         Route::get("activities", "ActivityController@index");
         Route::get("chats", "ChatController@index");
     });
-    Route::group(['prefix'=>"notifications"],function(){
-        Route::get("","NotificationController@index");
+    Route::group(['prefix' => "notifications"], function () {
+        Route::get("", "NotificationController@index");
         Route::post("delete", "NotificationController@delete");
     });
-    Route::group(['prefix'=>"articles"],function(){
-        Route::get("","ArticleController@index");
-        Route::post("save","ArticleController@save");
-        Route::post("delete","ArticleController@delete");
+    Route::group(['prefix' => "articles"], function () {
+        Route::get("", "ArticleController@index");
+        Route::post("save", "ArticleController@save");
+        Route::post("delete", "ArticleController@delete");
         Route::post("update", "ArticleController@update");
     });
 });

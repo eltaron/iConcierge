@@ -1,4 +1,8 @@
 @extends('admin.layouts.app')
+@push('style')
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+<script type="text/javascript" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+@endpush
 @section('content')
   <main class="main-content position-relative max-height-vh-100 h-100 mt-1 border-radius-lg ">
     @include('admin.includes.message')
@@ -22,8 +26,8 @@
 								</button>
             </div>
             <div class="card-body px-0 pt-0 pb-2">
-              <div class="table-responsive p-0">
-                <table class="table align-items-center mb-0">
+              <div class="table-responsive p-3">
+                <table class="table align-items-center mb-0" id="example">
                   <thead>
                     <tr>
                         <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">#</th>

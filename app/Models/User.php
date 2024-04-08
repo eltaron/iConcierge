@@ -24,7 +24,8 @@ class User extends Authenticatable
         'cover',
         'phone',
         'api_token',
-        'remember_token'
+        'remember_token',
+        'type'
     ];
 
     /**
@@ -53,8 +54,13 @@ class User extends Authenticatable
     {
         return $this->created_at->diffForHumans();
     }
+
     public function admin()
     {
         return $this->hasOne('App\Models\Admin');
+    }
+    public function subscription()
+    {
+        return $this->hasOne('App\Models\Subscription');
     }
 }

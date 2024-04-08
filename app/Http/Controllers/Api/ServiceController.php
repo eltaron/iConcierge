@@ -200,16 +200,32 @@ class ServiceController extends Controller
         try {
             $validation = $request->validate([
                 'user_id'           => 'required',
-                'service_id'        => 'required',
+                'description'       => 'nullable',
                 'inqiry_id'         => 'required',
                 'new_price'         => 'required',
             ]);
             $data = new Booking();
             $data->user_id = $request->user_id;
-            $data->service_id = $request->service_id;
+            $data->description = $request->description;
             $data->inqiry_id = $request->inqiry_id;
             $data->new_price = $request->new_price;
             $data->save();
+            return response()->json([
+                'message' => 'success',
+                'data' => $data
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'error',
+                'data' => $e->getMessage()
+            ]);
+        }
+    }
+    public function booking()
+    {
+        try {
+            $data = Booking::where('user_id', auth()->guard('api')->id())
+                ->with(['service'])->latest()->get();
             return response()->json([
                 'message' => 'success',
                 'data' => $data

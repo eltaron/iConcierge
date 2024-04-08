@@ -218,4 +218,5 @@
     ></script>
     <script defer src="{{asset('js/z.js')}}">
     </script>
+    @stack('script')
 </body>

@@ -5,13 +5,15 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Inqiry;
+use App\Models\Message;
+use App\Models\Service;
 
 class InquireController extends Controller
 {
     public function index(Request $request)
     {
         try {
-            $data = Inqiry::with(['user', 'service', 'last_messages'])->latest()->paginate($request->perpage);
+            $data = Inqiry::with(['user', 'last_messages'])->latest()->paginate($request->perpage);
             return response()->json([
                 'message' => 'success',
                 'data' => $data
@@ -26,7 +28,7 @@ class InquireController extends Controller
     public function show(Request $request)
     {
         try {
-            $data = Inqiry::with(['user', 'service', 'messages'])->find($request->id);
+            $data = Inqiry::with(['user', 'messages'])->find($request->id);
             return response()->json([
                 'message' => 'success',
                 'data' => $data
@@ -81,7 +83,14 @@ class InquireController extends Controller
     public function store_message(Request $request)
     {
         try {
-            $data = '';
+            $validation = $request->validate([
+                'inqiry_id'       => 'required',
+                'content'          => 'nullable',
+            ]);
+            $data = new Message();
+            $data->inqiry_id = $request->inqiry_id;
+            $data->content = $request->content;
+            $data->save();
             return response()->json([
                 'message' => 'success',
                 'data' => $data

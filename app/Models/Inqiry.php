@@ -32,10 +32,6 @@ class Inqiry extends Model
     {
         return $this->belongsTo('App\Models\User');
     }
-    public function service()
-    {
-        return $this->belongsTo('App\Models\Service');
-    }
     public function messages()
     {
         return $this->hasMany('App\Models\Message');

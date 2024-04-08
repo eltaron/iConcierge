@@ -10,7 +10,7 @@ class Booking extends Model
     use HasFactory;
     protected $fillable = [
         'user_id',
-        'service_id',
+        'description',
         'inqiry_id',
         'new_price'
     ];
@@ -28,9 +28,5 @@ class Booking extends Model
     public function inqiry()
     {
         return $this->belongsTo('App\Models\Inqiry');
-    }
-    public function service()
-    {
-        return $this->belongsTo('App\Models\Service');
     }
 }

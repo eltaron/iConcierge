@@ -17,7 +17,14 @@ class ServiceController extends Controller
     {
         $services = Service::latest()->get();
         $categories = Category::latest()->get();
-        return view('admin.services.index', compact('services', 'categories'));
+        $id = 0;
+        return view('admin.services.index', compact('services', 'categories', 'id'));
+    }
+    public function categories($id)
+    {
+        $services = Service::where('category_id', $id)->latest()->get();
+        $categories = Category::latest()->get();
+        return view('admin.services.index', compact('services', 'categories', 'id'));
     }
     public function show($id)
     {
@@ -38,6 +45,11 @@ class ServiceController extends Controller
         $data->description = $request->description;
         $data->map = $request->map;
         $data->price = $request->price;
+        if (isset($request->popular)) {
+            if ($request->popular == 1) {
+                $data->popular = 1;
+            }
+        }
         $data->save();
         $files = $request->file('images');
         if (isset($files)) {
@@ -84,6 +96,11 @@ class ServiceController extends Controller
                 }
                 if ($request->category) {
                     $data->category_id = $request->category;
+                }
+                if (isset($request->popular)) {
+                    if ($request->popular == 1) {
+                        $data->popular = 1;
+                    }
                 }
                 $data->save();
                 $files = $request->file('images');
