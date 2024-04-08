@@ -48,4 +48,10 @@ Route::group(['namespace' => 'Admin'], function () {
         Route::post("delete", "ArticleController@delete");
         Route::post("update", "ArticleController@update");
     });
+    Route::group(['prefix' => "bookings"], function () {
+        Route::get("", "BookingController@index");
+        Route::post("save", "BookingController@save");
+        Route::post("delete", "BookingController@delete");
+        Route::post("update", "BookingController@update");
+    });
 });

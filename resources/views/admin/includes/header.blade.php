@@ -182,7 +182,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="{{ Request::is('admin/schedule*') ? 'active' : '' }} nav-link" href="{{url('admin/schedule')}}">
+            <a class="{{ Request::is('admin/bookings*') ? 'active' : '' }} nav-link" href="{{url('admin/bookings')}}">
               <div
                 class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center"
               >
@@ -226,7 +226,7 @@
                   </g>
                 </svg>
               </div>
-              <span class="nav-link-text ms-1">Schedule</span>
+              <span class="nav-link-text ms-1">Bookings</span>
             </a>
           </li>
           <li class="nav-item">
